@@ -2,7 +2,7 @@
     <div class="task-bar">
         <nav>
             <span class="capital">全部任务</span>
-            <button class="btn-remove">删除事件</button>
+            <button class="btn-remove" @click="emit('btn-remove')">删除事件</button>
         </nav>
         <div class="task-list">
 
@@ -11,6 +11,7 @@
 </template>
 
 <script setup>
+const emit = defineEmits(['btn-remove'])
 </script>
 
 <style scoped>

@@ -14,7 +14,7 @@
             </svg>
         </div>
         <div class="event-list">
-            <button @click="addEvent" class="btn-add-event">
+            <button @click="addBtn" class="btn-add-event">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                     class="icon icon-tabler icons-tabler-outline icon-tabler-plus">
@@ -25,7 +25,7 @@
             </button>
             <ul>
                 <!-- <li class="event-active">默认事件</li> -->
-                <li v-for="(item, index) in eventTitles" key="item.title" :class="{ 'event-active': activeLi == index }"
+                <li v-for="(item, index) in eventList" key="item.title" :class="{ 'event-active': activeLi == index }"
                     @click="selectEvent(index)">
                     {{ item.title }}
                 </li>
@@ -37,32 +37,23 @@
 <script setup>
 import { ref } from 'vue';
 
-// Event: {title: '事件标题', todo: [{'taskName': 'decription'}], doing:[], completed: []}
-const eventTitles = ref([{
-    title: '默认事件',
-    todo: [],
-    doing: [],
-    completed: []
-}])
+const emit = defineEmits(['change-index', 'add-event'])
+defineProps(['eventList'])
 
 const activeLi = ref(0)
 
 // 添加一个事件
-const addEvent = () => {
+const addBtn = () => {
     let title = prompt("请输入事件的名称~", '')
     if (title.trim()) {
-        eventTitles.value.push({
-            title: title.trim(),
-            todo: [],
-            doing: [],
-            completed: []
-        })
+        emit('add-event', title.trim())
     }
 }
 
 // 高亮被点击的 Event
 const selectEvent = (index) => {
     activeLi.value = index
+    emit('change-index', activeLi.value)
 }
 </script>
 
@@ -111,6 +102,9 @@ ul li {
     width: 80%;
     height: 40px;
     border-radius: 10px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 ul li:hover {
