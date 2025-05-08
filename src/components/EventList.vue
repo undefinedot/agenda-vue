@@ -24,8 +24,11 @@
                 </svg>
             </button>
             <ul>
-                <li class="event-active">默认事件</li>
-                <li v-for="item in eventTitles" key="item.title">{{ item.title }}</li>
+                <!-- <li class="event-active">默认事件</li> -->
+                <li v-for="(item, index) in eventTitles" key="item.title" :class="{ 'event-active': activeLi == index }"
+                    @click="selectEvent(index)">
+                    {{ item.title }}
+                </li>
             </ul>
         </div>
     </div>
@@ -42,6 +45,9 @@ const eventTitles = ref([{
     completed: []
 }])
 
+const activeLi = ref(0)
+
+// 添加一个事件
 const addEvent = () => {
     let title = prompt("请输入事件的名称~", '')
     if (title.trim()) {
@@ -52,6 +58,11 @@ const addEvent = () => {
             completed: []
         })
     }
+}
+
+// 高亮被点击的 Event
+const selectEvent = (index) => {
+    activeLi.value = index
 }
 </script>
 
