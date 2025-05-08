@@ -64,6 +64,7 @@ const selectEvent = (index) => {
     height: 100vh;
     padding: 1rem 2rem;
     min-width: 200px;
+    overflow: auto;
 }
 
 .logo {
