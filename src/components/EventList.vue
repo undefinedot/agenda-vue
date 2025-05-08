@@ -14,7 +14,7 @@
             </svg>
         </div>
         <div class="event-list">
-            <button class="btn-add-event">
+            <button @click="addEvent" class="btn-add-event">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                     class="icon icon-tabler icons-tabler-outline icon-tabler-plus">
@@ -25,13 +25,34 @@
             </button>
             <ul>
                 <li class="event-active">默认事件</li>
+                <li v-for="item in eventTitles" key="item.title">{{ item.title }}</li>
             </ul>
         </div>
     </div>
 </template>
 
 <script setup>
+import { ref } from 'vue';
 
+// Event: {title: '事件标题', todo: [{'taskName': 'decription'}], doing:[], completed: []}
+const eventTitles = ref([{
+    title: '默认事件',
+    todo: [],
+    doing: [],
+    completed: []
+}])
+
+const addEvent = () => {
+    let title = prompt("请输入事件的名称~", '')
+    if (title.trim()) {
+        eventTitles.value.push({
+            title: title.trim(),
+            todo: [],
+            doing: [],
+            completed: []
+        })
+    }
+}
 </script>
 
 <style scoped>
