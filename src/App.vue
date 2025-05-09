@@ -1,7 +1,7 @@
 <template>
   <main>
-    <EventList @change-index="(i) => activeEventIndex = i" @add-event="addTheEvent" :eventList="eventTitles" />
-    <TaskList @btn-remove="removeTheEvent" />
+    <EventList @change-index="(i) => activeEventIndex = i" @add-event="addTheEvent" :eventList="eventList" />
+    <TaskList @btn-remove="removeTheEvent" :currentEvent="eventList[activeEventIndex]" @btn-add-task="addTask" />
   </main>
 
 </template>
@@ -10,19 +10,16 @@
 import { ref } from 'vue';
 import EventList from './components/EventList.vue'
 import TaskList from './components/TaskList.vue'
+import tasksData from '@/../data.js'
 
 const activeEventIndex = ref(0)
 
 // Event: {title: '事件标题', todo: [{'taskName': 'decription'}], doing:[], completed: []}
-const eventTitles = ref([{
-  title: '默认事件',
-  todo: [],
-  doing: [],
-  completed: []
-}])
+
+const eventList = ref(tasksData)
 
 const addTheEvent = (t) => {
-  eventTitles.value.push({
+  eventList.value.push({
     title: t,
     todo: [],
     doing: [],
@@ -31,18 +28,22 @@ const addTheEvent = (t) => {
 }
 
 const removeTheEvent = () => {
-  if (!confirm(`确定删除事件【${eventTitles.value[activeEventIndex.value].title}】吗？`)) return
-  eventTitles.value = eventTitles.value.filter((item, index) => {
+  if (!confirm(`确定删除事件【${eventList.value[activeEventIndex.value].title}】吗？`)) return
+  eventList.value = eventList.value.filter((item, index) => {
     return index != activeEventIndex.value
   })
-  if (eventTitles.value.length < 1) {
-    eventTitles.value = [{
-      title: '创建一个事件吧 ^^wwwwwwwwwwwwwwwwwwww wwwwwwwwwwwwww',
+  if (eventList.value.length < 1) {
+    eventList.value = [{
+      title: '创建一个事件吧 ^^',
       todo: [],
       doing: [],
       completed: []
     }]
   }
+}
+
+const addTask = (obj, key) => {
+  eventList.value[activeEventIndex.value][key].push(obj)
 }
 </script>
 

@@ -7,30 +7,77 @@
         <div class="task-list">
             <div class="task-column">
                 <h3>待办</h3>
-                <button class="btn-add-task">+</button>
+                <button @click="addTodo" class="btn-add-task">+</button>
                 <ul>
-                    <li class="task-item">
-                        <div class="title">标题</div>
-                        <p>description</p>
+                    <li class="task-item" v-for="item in currentEvent.todo">
+                        <div class="title">{{ item.name }}</div>
+                        <p>{{ item.description }}</p>
                     </li>
                 </ul>
             </div>
             <div class="task-column">
                 <h3>进行中</h3>
-                <button class="btn-add-task">+</button>
-                <ul></ul>
+                <button @click="addDoing" class="btn-add-task">+</button>
+                <ul>
+                    <li class="task-item" v-for="item in currentEvent.doing">
+                        <div class="title">{{ item.name }}</div>
+                        <p>{{ item.description }}</p>
+                    </li>
+                </ul>
             </div>
             <div class="task-column">
                 <h3>已完成</h3>
-                <button class="btn-add-task">+</button>
-                <ul></ul>
+                <button @click="addCompleted" class="btn-add-task">+</button>
+                <ul>
+                    <li class="task-item" v-for="item in currentEvent.completed">
+                        <div class="title">{{ item.name }}</div>
+                        <p>{{ item.description }}</p>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
-const emit = defineEmits(['btn-remove'])
+const emit = defineEmits(['btn-remove', 'btn-add-task'])
+defineProps(['currentEvent'])
+
+const addTodo = () => {
+    let name = prompt('添加待办事件的名称', '')
+    let description = prompt('添加待办事件的详细信息', '')
+    if (name || dec) {
+        const newTodo = {
+            name,
+            description
+        }
+        emit('btn-add-task', newTodo, 'todo')
+    }
+}
+
+const addDoing = () => {
+    let name = prompt('添加进行中事件的名称', '')
+    let description = prompt('添加进行中事件的详细信息', '')
+    if (name || dec) {
+        const newTodo = {
+            name,
+            description
+        }
+        emit('btn-add-task', newTodo, 'doing')
+    }
+}
+
+const addCompleted = () => {
+    let name = prompt('添加已完成事件的名称', '')
+    let description = prompt('添加已完成事件的详细信息', '')
+    if (name || dec) {
+        const newTodo = {
+            name,
+            description
+        }
+        emit('btn-add-task', newTodo, 'completed')
+    }
+}
 </script>
 
 <style scoped>
@@ -120,7 +167,6 @@ nav {
 }
 
 .task-item .title {
-    font-size: 1.3rem;
     line-height: 1.3rem;
     white-space: nowrap;
     text-overflow: ellipsis;
