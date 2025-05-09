@@ -45,7 +45,7 @@ const activeLi = ref(0)
 // 添加一个事件
 const addBtn = () => {
     let title = prompt("请输入事件的名称~", '')
-    if (title.trim()) {
+    if (title && title.trim()) {
         emit('add-event', title.trim())
     }
 }

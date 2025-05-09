@@ -40,14 +40,16 @@
 </template>
 
 <script setup>
+import { v4 as uuid } from "uuid"
 const emit = defineEmits(['btn-remove', 'btn-add-task'])
 defineProps(['currentEvent'])
 
 const addTodo = () => {
     let name = prompt('添加待办事件的名称', '')
     let description = prompt('添加待办事件的详细信息', '')
-    if (name || dec) {
+    if (name || description) {
         const newTodo = {
+            uuid: uuid(),
             name,
             description
         }
@@ -58,8 +60,9 @@ const addTodo = () => {
 const addDoing = () => {
     let name = prompt('添加进行中事件的名称', '')
     let description = prompt('添加进行中事件的详细信息', '')
-    if (name || dec) {
+    if (name || description) {
         const newTodo = {
+            uuid: uuid(),
             name,
             description
         }
@@ -70,8 +73,9 @@ const addDoing = () => {
 const addCompleted = () => {
     let name = prompt('添加已完成事件的名称', '')
     let description = prompt('添加已完成事件的详细信息', '')
-    if (name || dec) {
+    if (name || description) {
         const newTodo = {
+            uuid: uuid(),
             name,
             description
         }
