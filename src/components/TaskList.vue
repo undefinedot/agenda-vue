@@ -10,10 +10,20 @@
                 <button @click="addTodo" class="btn-add-task">+</button>
                 <ul>
                     <draggable :list="currentEvent.todo" item-key="uuid" @change="saveLocal" group="tasks">
-                        <template #item="{ element }">
+                        <template #item="{ element, index }">
                             <li class="task-item">
                                 <div class="title">{{ element.name }}</div>
                                 <p>{{ element.description }}</p>
+                                <div class="close" @click="delTask(index, 'todo')">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        class="icon icon-tabler icons-tabler-outline icon-tabler-x">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M18 6l-12 12" />
+                                        <path d="M6 6l12 12" />
+                                    </svg>
+                                </div>
                             </li>
                         </template>
                     </draggable>
@@ -24,10 +34,20 @@
                 <button @click="addDoing" class="btn-add-task">+</button>
                 <ul>
                     <draggable :list="currentEvent.doing" item-key="uuid" @change="saveLocal" group="tasks">
-                        <template #item="{ element }">
+                        <template #item="{ element, index }">
                             <li class="task-item">
                                 <div class="title">{{ element.name }}</div>
                                 <p>{{ element.description }}</p>
+                                <div class="close" @click="delTask(index, 'doing')">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        class="icon icon-tabler icons-tabler-outline icon-tabler-x">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M18 6l-12 12" />
+                                        <path d="M6 6l12 12" />
+                                    </svg>
+                                </div>
                             </li>
                         </template>
                     </draggable>
@@ -38,10 +58,20 @@
                 <button @click="addCompleted" class="btn-add-task">+</button>
                 <ul>
                     <draggable :list="currentEvent.completed" item-key="uuid" @change="saveLocal" group="tasks">
-                        <template #item="{ element }">
+                        <template #item="{ element, index }">
                             <li class="task-item">
                                 <div class="title">{{ element.name }}</div>
                                 <p>{{ element.description }}</p>
+                                <div class="close" @click="delTask(index, 'completed')">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        class="icon icon-tabler icons-tabler-outline icon-tabler-x">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M18 6l-12 12" />
+                                        <path d="M6 6l12 12" />
+                                    </svg>
+                                </div>
                             </li>
                         </template>
                     </draggable>
@@ -55,7 +85,7 @@
 import { v4 as uuid } from "uuid"
 import draggable from "vuedraggable"
 
-const emit = defineEmits(['btn-remove', 'btn-add-task', 'drag-task'])
+const emit = defineEmits(['btn-remove', 'btn-add-task', 'btn-del-task', 'drag-task'])
 defineProps(['currentEvent'])
 
 const addTodo = () => {
@@ -105,7 +135,9 @@ const saveLocal = (param) => {
     }
 }
 
-
+const delTask = (i, category) => {
+    emit('btn-del-task', i, category)
+}
 </script>
 
 <style scoped>
@@ -192,6 +224,7 @@ nav {
     background: #f0f0f0;
     margin: 0 auto 0.8rem;
     padding: 1rem 0.6rem;
+    position: relative;
 }
 
 .task-item .title {
@@ -213,5 +246,17 @@ nav {
     color: rgba(241, 163, 18, 0.8);
     overflow-wrap: break-word;
     margin: 8px 10px 0;
+}
+
+.task-item .close {
+    color: red;
+    position: absolute;
+    right: 5px;
+    bottom: 3px;
+    transition: transform 0.3s;
+}
+
+.task-item .close:hover {
+    transform: rotate(90deg);
 }
 </style>
