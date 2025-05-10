@@ -20,7 +20,13 @@ const activeEventIndex = ref(0)
 localStorage.setItem('AllEvents', JSON.stringify(tasksData))
 const eventList = ref(JSON.parse(localStorage.getItem('AllEvents')))
 
-const addTheEvent = (t) => {
+const addTheEvent = (title) => {
+  // 去重
+  const t = title.toLowerCase()
+  if (eventList.value.find((item) => { return item.title.toLowerCase() == t })) {
+    alert('事件已存在!')
+    return
+  }
   eventList.value.push({
     title: t,
     todo: [],
@@ -28,7 +34,6 @@ const addTheEvent = (t) => {
     completed: []
   })
   localStorage.setItem('AllEvents', JSON.stringify(eventList.value))
-
 }
 
 const removeTheEvent = () => {
