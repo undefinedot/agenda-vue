@@ -144,6 +144,8 @@ const delTask = (i, category) => {
 .task-bar {
     flex: 3;
     padding: 2rem 0.8rem;
+    border-left: 3px solid #d5d1d1;
+
 }
 
 nav {

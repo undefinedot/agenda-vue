@@ -13,24 +13,23 @@
                 <path d="M13 16l2 0" />
             </svg>
         </div>
-        <div class="event-list">
-            <button @click="addBtn" class="btn-add-event">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                    class="icon icon-tabler icons-tabler-outline icon-tabler-plus">
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                    <path d="M12 5l0 14" />
-                    <path d="M5 12l14 0" />
-                </svg>
-            </button>
-            <ul>
-                <!-- <li class="event-active">默认事件</li> -->
-                <li v-for="(item, index) in eventList" key="item.title" :class="{ 'event-active': activeLi == index }"
-                    @click="selectEvent(index)">
-                    {{ item.title }}
-                </li>
-            </ul>
-        </div>
+        <button @click="addBtn" class="btn-add-event">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="icon icon-tabler icons-tabler-outline icon-tabler-plus">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M12 5l0 14" />
+                <path d="M5 12l14 0" />
+            </svg>
+        </button>
+        <!-- <div class="event-list"> -->
+        <ul>
+            <li v-for="(item, index) in eventList" key="item.title" :class="{ 'event-active': activeLi == index }"
+                @click="selectEvent(index)">
+                {{ item.title }}
+            </li>
+        </ul>
+        <!-- </div> -->
     </div>
 </template>
 
@@ -60,11 +59,9 @@ const selectEvent = (index) => {
 <style scoped>
 .slide-bar {
     flex: 1;
-    border-right: 3px solid #d5d1d1;
     height: 100vh;
-    padding: 1rem 2rem;
+    padding-right: 0.5rem;
     min-width: 200px;
-    overflow: auto;
 }
 
 .logo {
@@ -93,6 +90,8 @@ button:hover {
 
 ul {
     list-style-type: none;
+    height: 70%;
+    overflow: auto;
 }
 
 ul li {

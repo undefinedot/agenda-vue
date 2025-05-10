@@ -39,20 +39,17 @@ const addTheEvent = (title) => {
 const removeTheEvent = () => {
   if (!confirm(`确定删除事件【${eventList.value[activeEventIndex.value].title}】吗？`)) return
 
-  let eventListArray = []
-  eventListArray = eventList.value.filter((item, index) => {
-    return index != activeEventIndex.value
-  })
-  if (eventListArray.length < 1) {
-    eventListArray = [{
+  eventList.value.splice(activeEventIndex.value, 1)
+  if (eventList.value.length < 1) {
+    eventList.value.push({
       title: '创建一个事件吧 ^^',
       todo: [],
       doing: [],
       completed: []
-    }]
+    })
   }
 
-  localStorage.setItem('AllEvents', JSON.stringify(eventListArray))
+  localStorage.setItem('AllEvents', JSON.stringify(eventList.value))
   eventList.value = JSON.parse(localStorage.getItem('AllEvents'))
 }
 
