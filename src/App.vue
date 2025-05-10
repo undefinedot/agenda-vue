@@ -1,7 +1,8 @@
 <template>
   <main>
     <EventList @change-index="(i) => activeEventIndex = i" @add-event="addTheEvent" :eventList="eventList" />
-    <TaskList @btn-remove="removeTheEvent" :currentEvent="eventList[activeEventIndex]" @btn-add-task="addTask" />
+    <TaskList @btn-remove="removeTheEvent" :currentEvent="eventList[activeEventIndex]" @btn-add-task="addTask"
+      @drag-task="modifyTaskList" />
   </main>
 
 </template>
@@ -61,6 +62,11 @@ const addTask = (obj, key) => {
     eventList.value[activeEventIndex.value][key].push(obj)
     localStorage.setItem('AllEvents', JSON.stringify(eventList.value))
   }
+}
+
+// save to localStorage after dragged
+const modifyTaskList = () => {
+  localStorage.setItem('AllEvents', JSON.stringify(eventList.value))
 }
 </script>
 

@@ -9,30 +9,42 @@
                 <h3>待办</h3>
                 <button @click="addTodo" class="btn-add-task">+</button>
                 <ul>
-                    <li class="task-item" v-for="item in currentEvent.todo">
-                        <div class="title">{{ item.name }}</div>
-                        <p>{{ item.description }}</p>
-                    </li>
+                    <draggable :list="currentEvent.todo" item-key="uuid" @change="saveLocal" group="tasks">
+                        <template #item="{ element }">
+                            <li class="task-item">
+                                <div class="title">{{ element.name }}</div>
+                                <p>{{ element.description }}</p>
+                            </li>
+                        </template>
+                    </draggable>
                 </ul>
             </div>
             <div class="task-column">
                 <h3>进行中</h3>
                 <button @click="addDoing" class="btn-add-task">+</button>
                 <ul>
-                    <li class="task-item" v-for="item in currentEvent.doing">
-                        <div class="title">{{ item.name }}</div>
-                        <p>{{ item.description }}</p>
-                    </li>
+                    <draggable :list="currentEvent.doing" item-key="uuid" @change="saveLocal" group="tasks">
+                        <template #item="{ element }">
+                            <li class="task-item">
+                                <div class="title">{{ element.name }}</div>
+                                <p>{{ element.description }}</p>
+                            </li>
+                        </template>
+                    </draggable>
                 </ul>
             </div>
             <div class="task-column">
                 <h3>已完成</h3>
                 <button @click="addCompleted" class="btn-add-task">+</button>
                 <ul>
-                    <li class="task-item" v-for="item in currentEvent.completed">
-                        <div class="title">{{ item.name }}</div>
-                        <p>{{ item.description }}</p>
-                    </li>
+                    <draggable :list="currentEvent.completed" item-key="uuid" @change="saveLocal" group="tasks">
+                        <template #item="{ element }">
+                            <li class="task-item">
+                                <div class="title">{{ element.name }}</div>
+                                <p>{{ element.description }}</p>
+                            </li>
+                        </template>
+                    </draggable>
                 </ul>
             </div>
         </div>
@@ -41,7 +53,9 @@
 
 <script setup>
 import { v4 as uuid } from "uuid"
-const emit = defineEmits(['btn-remove', 'btn-add-task'])
+import draggable from "vuedraggable"
+
+const emit = defineEmits(['btn-remove', 'btn-add-task', 'drag-task'])
 defineProps(['currentEvent'])
 
 const addTodo = () => {
@@ -82,6 +96,16 @@ const addCompleted = () => {
         emit('btn-add-task', newTodo, 'completed')
     }
 }
+
+const saveLocal = (param) => {
+    // 拖拽完成后，通知 APP 组件保存新数据到本地
+    // 避免触发2次
+    if (param.added || param.moved) {
+        emit('drag-task')
+    }
+}
+
+
 </script>
 
 <style scoped>
