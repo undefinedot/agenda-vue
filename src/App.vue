@@ -2,23 +2,32 @@
   <main>
     <EventList @change-index="(i) => activeEventIndex = i" @add-event="addTheEvent" :eventList="eventList" />
     <TaskList @btn-remove="removeTheEvent" :currentEvent="eventList[activeEventIndex]" @btn-add-task="addTask"
-      @drag-task="modifyTaskList" @btn-del-task="delTheTask" />
+      @drag-task="modifyTaskList" @btn-del-task="delTheTask" @btn-update-task="updateTheTask" />
   </main>
 
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { onBeforeMount, ref } from 'vue';
 import EventList from './components/EventList.vue'
 import TaskList from './components/TaskList.vue'
-import tasksData from '@/../data.js'
 
 const activeEventIndex = ref(0)
-
-// Event: {title: '事件标题', todo: [{'taskName': 'decription'}], doing:[], completed: []}
-
-localStorage.setItem('AllEvents', JSON.stringify(tasksData))
-const eventList = ref(JSON.parse(localStorage.getItem('AllEvents')))
+const eventList = ref([])
+onBeforeMount(() => {
+  let defaultEvent = []
+  if (!localStorage.getItem('AllEvents')) {
+    defaultEvent.push({
+      title: '创建一个事件吧 ^^',
+      todo: [],
+      doing: [],
+      completed: []
+    })
+  } else {
+    defaultEvent = JSON.parse(localStorage.getItem('AllEvents'))
+  }
+  eventList.value = defaultEvent
+})
 
 const addTheEvent = (title) => {
   // 去重
@@ -73,6 +82,17 @@ const modifyTaskList = () => {
 
 const delTheTask = (i, key) => {
   eventList.value[activeEventIndex.value][key].splice(i, 1)
+  localStorage.setItem('AllEvents', JSON.stringify(eventList.value))
+}
+
+const updateTheTask = (task, key, i) => {
+  if (eventList.value[activeEventIndex.value][key].some((item) => {
+    return item.name.toLowerCase() === task.name.toLowerCase()
+  })) {
+    alert('名字已存在!')
+    return
+  }
+  eventList.value[activeEventIndex.value][key][i] = task
   localStorage.setItem('AllEvents', JSON.stringify(eventList.value))
 }
 </script>

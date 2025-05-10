@@ -11,10 +11,10 @@
                 <ul>
                     <draggable :list="currentEvent.todo" item-key="uuid" @change="saveLocal" group="tasks">
                         <template #item="{ element, index }">
-                            <li class="task-item">
+                            <li class="task-item" @click="updateTask(element, index, 'todo')">
                                 <div class="title">{{ element.name }}</div>
                                 <p>{{ element.description }}</p>
-                                <div class="close" @click="delTask(index, 'todo')">
+                                <div class="close" @click.stop="delTask(index, 'todo')">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                         stroke-linejoin="round"
@@ -35,10 +35,10 @@
                 <ul>
                     <draggable :list="currentEvent.doing" item-key="uuid" @change="saveLocal" group="tasks">
                         <template #item="{ element, index }">
-                            <li class="task-item">
+                            <li class="task-item" @click="updateTask(element, index, 'doing')">
                                 <div class="title">{{ element.name }}</div>
                                 <p>{{ element.description }}</p>
-                                <div class="close" @click="delTask(index, 'doing')">
+                                <div class="close" @click.stop="delTask(index, 'doing')">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                         stroke-linejoin="round"
@@ -59,10 +59,10 @@
                 <ul>
                     <draggable :list="currentEvent.completed" item-key="uuid" @change="saveLocal" group="tasks">
                         <template #item="{ element, index }">
-                            <li class="task-item">
+                            <li class="task-item" @click="updateTask(element, index, 'completed')">
                                 <div class="title">{{ element.name }}</div>
                                 <p>{{ element.description }}</p>
-                                <div class="close" @click="delTask(index, 'completed')">
+                                <div class="close" @click.stop="delTask(index, 'completed')">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                         stroke-linejoin="round"
@@ -85,7 +85,7 @@
 import { v4 as uuid } from "uuid"
 import draggable from "vuedraggable"
 
-const emit = defineEmits(['btn-remove', 'btn-add-task', 'btn-del-task', 'drag-task'])
+const emit = defineEmits(['btn-remove', 'btn-add-task', 'btn-del-task', 'drag-task', 'btn-update-task'])
 defineProps(['currentEvent'])
 
 const addTodo = () => {
@@ -137,6 +137,19 @@ const saveLocal = (param) => {
 
 const delTask = (i, category) => {
     emit('btn-del-task', i, category)
+}
+
+const updateTask = (elem, i, key) => {
+    const newName = prompt('请输入新的事件名', elem.name)
+    const newDescription = prompt('请输入新的详细信息', elem.description)
+    if (newName && newDescription) {
+        const updatedTask = {
+            uuid: elem.uuid,
+            name: newName,
+            description: newDescription
+        }
+        emit('btn-update-task', updatedTask, key, i)
+    }
 }
 </script>
 
