@@ -1,6 +1,7 @@
 <template>
   <main>
-    <EventList @change-index="(i) => activeEventIndex = i" @add-event="addTheEvent" :eventList="eventList" />
+    <EventList @change-index="(i) => activeEventIndex = i" @add-event="addTheEvent" :eventList="eventList"
+      :activeEvent="activeEventIndex" />
     <TaskList @btn-remove="removeTheEvent" :currentEvent="eventList[activeEventIndex]" @btn-add-task="addTask"
       @drag-task="modifyTaskList" @btn-del-task="delTheTask" @btn-update-task="updateTheTask" />
   </main>
@@ -58,6 +59,7 @@ const removeTheEvent = () => {
     })
   }
 
+  activeEventIndex.value = 0 // 删除当前Event后高亮第一个
   localStorage.setItem('AllEvents', JSON.stringify(eventList.value))
   eventList.value = JSON.parse(localStorage.getItem('AllEvents'))
 }

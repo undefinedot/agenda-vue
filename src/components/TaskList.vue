@@ -94,8 +94,8 @@ const addTodo = () => {
     if (name || description) {
         const newTodo = {
             uuid: uuid(),
-            name,
-            description
+            name: name.trim(),
+            description: description.trim()
         }
         emit('btn-add-task', newTodo, 'todo')
     }
@@ -107,8 +107,8 @@ const addDoing = () => {
     if (name || description) {
         const newTodo = {
             uuid: uuid(),
-            name,
-            description
+            name: name.trim(),
+            description: description.trim()
         }
         emit('btn-add-task', newTodo, 'doing')
     }
@@ -120,8 +120,8 @@ const addCompleted = () => {
     if (name || description) {
         const newTodo = {
             uuid: uuid(),
-            name,
-            description
+            name: name.trim(),
+            description: description.trim()
         }
         emit('btn-add-task', newTodo, 'completed')
     }
@@ -145,8 +145,8 @@ const updateTask = (elem, i, key) => {
     if (newName && newDescription) {
         const updatedTask = {
             uuid: elem.uuid,
-            name: newName,
-            description: newDescription
+            name: newName.trim(),
+            description: newDescription.trim()
         }
         emit('btn-update-task', updatedTask, key, i)
     }

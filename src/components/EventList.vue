@@ -24,7 +24,7 @@
         </button>
         <!-- <div class="event-list"> -->
         <ul>
-            <li v-for="(item, index) in eventList" key="item.title" :class="{ 'event-active': activeLi == index }"
+            <li v-for="(item, index) in eventList" key="item.title" :class="{ 'event-active': activeEvent == index }"
                 @click="selectEvent(index)">
                 {{ item.title }}
             </li>
@@ -37,9 +37,9 @@
 import { ref } from 'vue';
 
 const emit = defineEmits(['change-index', 'add-event'])
-defineProps(['eventList'])
+defineProps(['eventList', 'activeEvent'])
 
-const activeLi = ref(0)
+// const activeLi = ref(0)
 
 // 添加一个事件
 const addBtn = () => {
@@ -51,8 +51,7 @@ const addBtn = () => {
 
 // 高亮被点击的 Event
 const selectEvent = (index) => {
-    activeLi.value = index
-    emit('change-index', activeLi.value)
+    emit('change-index', index)
 }
 </script>
 
