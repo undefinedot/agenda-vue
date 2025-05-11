@@ -89,7 +89,7 @@ const delTheTask = (i, key) => {
 
 const updateTheTask = (task, key, i) => {
   if (eventList.value[activeEventIndex.value][key].some((item) => {
-    return item.name.toLowerCase() === task.name.toLowerCase()
+    return item.uuid != task.uuid && item.name.toLowerCase() === task.name.toLowerCase()
   })) {
     alert('名字已存在!')
     return
